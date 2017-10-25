@@ -14,7 +14,7 @@
 * [**Additional Resources.**](#additionalResources)
 
 ## <a id="description"/></a>Description
-Component used for symmetric encryption and secure hash generation ([scrypt key derivation function](http://www.tarsnap.com/scrypt.html)) for secured password storage.
+Component used for symmetric encryption and secure hash generation ([scrypt key derivation function](http://www.tarsnap.com/scrypt.html)) for secure password storage.
 
 [Back to Index ^](#index)
 
