@@ -8,6 +8,9 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
 import junit.framework.TestCase;
+import research.crypto.main.BlockCipherAlgorithms;
+import research.crypto.main.CipherException;
+import research.crypto.main.SecureCredentials;
 
 /**
  * 
