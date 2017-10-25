@@ -1,4 +1,4 @@
-# password-encryption
+# Password Encryption
 ---
 
 ## <a id="index"></a>Index
