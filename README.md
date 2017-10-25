@@ -1,5 +1,6 @@
 # Password Encryption
 ---
+[![Build Status](https://travis-ci.org/aaguilerav/space-filling-curves.svg?branch=master)](https://travis-ci.org/aaguilerav/space-filling-curves)
 
 ## <a id="index"></a>Index
 
