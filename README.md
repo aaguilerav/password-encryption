@@ -1,5 +1,6 @@
-# password-encryption
+# Password Encryption
 ---
+[![Build Status](https://travis-ci.org/aaguilerav/password-encryption.svg?branch=master)](https://travis-ci.org/aaguilerav/password-encryption)
 
 ## <a id="index"></a>Index
 
@@ -31,7 +32,7 @@ No configuration needed.
 [Back to Index ^](#index)
 
 ## <a id="packaging"/></a>Packaging
-In order to compile and package this component in it's JAR form, [maven 3.0](https://maven.apache.org/) or above is needed, just type the command `mvn clean package` where the `pom.xml` file is, and the `commons-crypto-x.x.x.jar` file will be created at `commons-crypto/target`. This procedure assumes that a NEXUS Repository User is registered, and the proper configuration at the `.m2` folder exists.
+In order to compile and package this component in it's JAR form, [maven 3.0](https://maven.apache.org/) or above is needed, just type the command `mvn clean package` where the `pom.xml` file is, and the `password-encryption-x.x.x.jar` file will be created at `password-encryption/target`.
 
 [Back to Index ^](#index)
 
