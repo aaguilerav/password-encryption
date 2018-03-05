@@ -20,7 +20,7 @@ Component used for symmetric encryption and secure hash generation ([scrypt key 
 
 ## <a id="preRequisites"/></a>Pre-requisites
 For this component to work properly, some pre-requisites are needed:
-* Java 7.
+* Java 7 and above.
 * [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files.](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html)
 * [`scrypt`](http://www.tarsnap.com/scrypt.html) at OS level. For mac users, use `brew install scrypt`.
 
