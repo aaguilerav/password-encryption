@@ -50,7 +50,7 @@ No services exposed as APIs.
 | VERSION       | DESCRIPTION  |
 |:-------------:|:-------------|
 | 1.0.0         | First version of the component. |
-| 1.1.0         | BUG FIXED: When encrypting a hashed password and its salt the same IV was used which is incorrect. Another IV is generated for the SALT exclusively. |
+| 1.1.0         | BUG FIXED: When encrypting a hashed password and its salt, the same IV was used which is incorrect. Another IV is generated for the SALT exclusively. |
 
 [Back to Index ^](#index)
 
