@@ -1,4 +1,4 @@
-# Secure Password Storage
+# Secure Password Validation & Storage
 ---
 [![Build Status](https://travis-ci.org/aaguilerav/password-encryption.svg?branch=master)](https://travis-ci.org/aaguilerav/password-encryption)
 
