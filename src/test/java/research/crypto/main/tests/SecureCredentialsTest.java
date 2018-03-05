@@ -43,12 +43,14 @@ public class SecureCredentialsTest extends TestCase {
 							+ i, Hex.encodeHexString(key), 16384, 4, 1);
 			String encDk = M.getEncryptedDerivedKey();
 			String encSalt = M.getEncryptedSaltAsHexStr();
-			String iv = M.getInitialVectorAsHexStr();
+			String keyIv = M.getKeyInitialVectorAsHexStr();
+			String saltIv = M.getSaltInitialVectorAsHexStr();
 
 			System.out.println("key: " + Hex.encodeHexString(key));
 			System.out.println("encDk: " + encDk);
 			System.out.println("encSalt: " + encSalt);
-			System.out.println("iv: " + iv);
+			System.out.println("keyIv: " + keyIv);
+			System.out.println("saltIv: " + saltIv);
 
 			/**
 			 * Validating Derived Key
@@ -60,7 +62,7 @@ public class SecureCredentialsTest extends TestCase {
 			M = new SecureCredentials(
 					"reallyLongPasswordLikeTheOnesEverybodyShouldBeUsinByNow"
 							+ i + noise, Hex.encodeHexString(key), encDk,
-					encSalt, iv, 16384, 4, 1);
+					encSalt, keyIv, saltIv, 16384, 4, 1);
 			System.out.println(M.validateCredentials());
 		}
 	}

@@ -14,66 +14,47 @@ import com.lambdaworks.crypto.SCryptUtil;
  * Provides the functionality necessary for handling user passwords 
  * securely
  * @author Alejandro Aguilera Vega
- *
  */
 public class SecureCredentials {
 
-    /**
-     * Logger that sends information to centralized logs
-     */
-    private static final Logger LOG
-            = Logger.getLogger(SecureCredentials.class);
+    /** Logger that sends information to centralized logs */
+    private static final Logger LOG = Logger.getLogger(SecureCredentials.class);
     
-    /**
-     * The instance of BlockCipher used to encrypt/decrypt
-     */
-    private BlockCipher cipher;
+    /** The instance of BlockCipher used to encrypt/decrypt the Key */
+    private BlockCipher keyCipher;
 
-    /**
-     * AES-256-CBC with padding algorithm is selected for future integration with EFT HSM.
-     */
+    /** The instance of BlockCipher used to encrypt/decrypt the SALT */
+    private BlockCipher saltCipher;
+
+    /** AES-256-CBC with padding algorithm is selected for future integration with EFT HSM. */
     private BlockCipherAlgorithms cipherType = BlockCipherAlgorithms.AES_CBC_PKCS5Padding;
 
-    /**
-     * User's password
-     */
+    /** User's password */
     private String clientPwd;
 
-    /**
-     * The key that is used to encrypt the salt
-     */
+    /** The key that is used to encrypt the salt */
     private String keyAsHexStr;
 
-    /**
-     * The password transformed into a Derived Key using scrypt
-     */
+    /** The password transformed into a Derived Key using scrypt */
     private String derivedKey = null;
 
-    /**
-     * The salt that is used to calculate the derived key
-     */
+    /** The salt that is used to calculate the derived key */
     private String saltAsHexStr;
 
-    /**
-     * The initial vector used by the cipher
-     */
-    private String initialVectorAsHexStr;
+    /** The initial vector used by the cipher */
+    private String keyInitialVectorAsHexStr;
 
-    /**
-     * CPU cost parameter. (Default value: 16384)
-     */
+    /** The initial vector used by the cipher */
+    private String saltInitialVectorAsHexStr;
+
+    /** CPU cost parameter. (Default value: 16384) */
     private int derivedKeyAlgoMaxMemory = 16384;
 
-    /**
-     * Memory cost parameter. (Default value: 2)
-     */
+    /** Memory cost parameter. (Default value: 2) */
     private int derivedKeyAlgoMaxMemoryFraction = 2;
 
-    /**
-     * Parallelization parameter. (Default value: 1)
-     */
+    /** Parallelization parameter. (Default value: 1) */
     private int derivedKeyAlgoMaxTime = 1;
-
 
     /**
      * Constructor. This one should be used when securing user credentials.
@@ -96,8 +77,13 @@ public class SecureCredentials {
         this.clientPwd = clientPwd;
         this.keyAsHexStr = keyAsHexStr;
         this.saltAsHexStr = this.generateRandomSalt();
-        this.initialVectorAsHexStr = this.generateRandomInitialVector();
-        this.cipher = new BlockCipher(this.cipherType, this.initialVectorAsHexStr);
+
+        this.keyInitialVectorAsHexStr = this.generateRandomInitialVector();
+        this.keyCipher = new BlockCipher(this.cipherType, this.keyInitialVectorAsHexStr);
+
+        this.saltInitialVectorAsHexStr = this.generateRandomInitialVector();
+        this.saltCipher = new BlockCipher(this.cipherType, this.saltInitialVectorAsHexStr);
+
         this.derivedKeyAlgoMaxMemory = derivedKeyAlgoMaxMemory;
         this.derivedKeyAlgoMaxMemoryFraction = derivedKeyAlgoMaxMemoryFraction;
         this.derivedKeyAlgoMaxTime = derivedKeyAlgoMaxTime;
@@ -117,7 +103,8 @@ public class SecureCredentials {
      * @param keyAsHexStr
      * @param encryptedDerivedKeyAsHexStr
      * @param encryptedSaltAsHexStr
-     * @param initialVectorAsHexStr
+     * @param keyInitialVectorAsHexStr
+     * @param saltInitialVectorAsHexStr
      * @param derivedKeyAlgoMaxMemory
      * @param derivedKeyAlgoMaxMemoryFraction
      * @param derivedKeyAlgoMaxTime
@@ -129,7 +116,8 @@ public class SecureCredentials {
             final String keyAsHexStr,
             final String encryptedDerivedKeyAsHexStr,
             final String encryptedSaltAsHexStr,
-            final String initialVectorAsHexStr,
+            final String keyInitialVectorAsHexStr,
+            final String saltInitialVectorAsHexStr,
             final int derivedKeyAlgoMaxMemory,
             final int derivedKeyAlgoMaxMemoryFraction,
             final int derivedKeyAlgoMaxTime)
@@ -137,12 +125,14 @@ public class SecureCredentials {
 
         this.clientPwd = clientPwd;
         this.keyAsHexStr = keyAsHexStr;
-        this.initialVectorAsHexStr = initialVectorAsHexStr;
+        this.keyInitialVectorAsHexStr = keyInitialVectorAsHexStr;
+        this.saltInitialVectorAsHexStr = saltInitialVectorAsHexStr;
 
-        /**
-         * The cipher is initialized
-         */
-        this.cipher = new BlockCipher(this.cipherType, this.initialVectorAsHexStr);
+        /** The KEY cipher is initialized  */
+        this.keyCipher = new BlockCipher(this.cipherType, this.keyInitialVectorAsHexStr);
+
+        /** The SALT cipher is initialized */
+        this.saltCipher = new BlockCipher(this.cipherType, this.saltInitialVectorAsHexStr);
 
         /**
          * The provided derived key is decrypted.
@@ -153,15 +143,13 @@ public class SecureCredentials {
          */
         this.derivedKey = (new String(
                 Hex.decodeHex(
-                    this.cipher.decrypt(
+                    this.keyCipher.decrypt(
                             this.keyAsHexStr, 
                             encryptedDerivedKeyAsHexStr).toCharArray()),
                             StandardCharsets.US_ASCII));
 
-        /**
-         * The salt is decrypted.
-         */
-        this.saltAsHexStr = this.cipher.decrypt(this.keyAsHexStr, encryptedSaltAsHexStr);
+        /** The salt is decrypted. */
+        this.saltAsHexStr = this.saltCipher.decrypt(this.keyAsHexStr, encryptedSaltAsHexStr);
 
         this.derivedKeyAlgoMaxMemory = derivedKeyAlgoMaxMemory;
         this.derivedKeyAlgoMaxMemoryFraction = derivedKeyAlgoMaxMemoryFraction;
@@ -247,7 +235,7 @@ public class SecureCredentials {
          * ATTENTION: The derived key is a string in a specific format, its encrypted
          * form is represented as a HexString.
          */
-        return this.cipher.encrypt(
+        return this.keyCipher.encrypt(
                 this.keyAsHexStr, 
                 Hex.encodeHexString(
                         this.derivedKey.getBytes(
@@ -262,17 +250,26 @@ public class SecureCredentials {
      */
     public String getEncryptedSaltAsHexStr() throws CipherException {
 
-        return this.cipher.encrypt(
+        return this.saltCipher.encrypt(
                 this.keyAsHexStr, this.saltAsHexStr);
     }
 
     /**
-     * Gets the Initial Vector As HexStr
+     * Gets the KEY Initial Vector As HexStr
      * @return
      */
-    public String getInitialVectorAsHexStr() {
+    public String getKeyInitialVectorAsHexStr() {
 
-        return this.initialVectorAsHexStr;
+        return this.keyInitialVectorAsHexStr;
+    }
+
+    /**
+     * Gets the SALT Initial Vector As HexStr
+     * @return
+     */
+    public String getSaltInitialVectorAsHexStr() {
+
+        return this.saltInitialVectorAsHexStr;
     }
 
     /**

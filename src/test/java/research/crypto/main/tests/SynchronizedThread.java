@@ -59,14 +59,16 @@ public class SynchronizedThread extends Thread {
 
 				String encDk = M.getEncryptedDerivedKey();
 				String encSalt = M.getEncryptedSaltAsHexStr();
-				String iv = M.getInitialVectorAsHexStr();
+				String keyIv = M.getKeyInitialVectorAsHexStr();
+				String saltIv = M.getSaltInitialVectorAsHexStr();
 
 				M = new SecureCredentials(
 						this.index+"reallyLongPasswordLikeTheOnesEverybodyShouldBeUsinByNow"+i+this.noise,
 						Hex.encodeHexString(key),
 						encDk,
 						encSalt,
-						iv,
+						keyIv,
+						saltIv,
 						4096,2,1);
 
 				this.result = (this.result && M.validateCredentials());
