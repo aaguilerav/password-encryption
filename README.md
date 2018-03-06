@@ -25,7 +25,7 @@ Component used for symmetric encryption and secure hash generation ([scrypt key 
 ![Fig1](https://raw.githubusercontent.com/aaguilerav/password-encryption/master/res/process/securely-storing-credentials.png)
 
 ### Securely Validating Credentials
-![Fig2](https://raw.githubusercontent.com/aaguilerav/password-encryption/master/res/process/securely-validating-credentials.png)
+![Fig2](https://raw.githubusercontent.com/aaguilerav/password-encryption/master/res/process/securely-validating-userandpwd.png)
 
 [Back to Index ^](#index)
 
