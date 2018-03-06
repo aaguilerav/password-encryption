@@ -20,7 +20,7 @@ Component used for symmetric encryption and secure hash generation ([scrypt key 
 
 ## <a id="preRequisites"/></a>Pre-requisites
 For this component to work properly, some pre-requisites are needed:
-* Java 7.
+* Java 7 and above.
 * [Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files.](http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html)
 * [`scrypt`](http://www.tarsnap.com/scrypt.html) at OS level. For mac users, use `brew install scrypt`.
 
@@ -50,6 +50,7 @@ No services exposed as APIs.
 | VERSION       | DESCRIPTION  |
 |:-------------:|:-------------|
 | 1.0.0         | First version of the component. |
+| 1.1.0         | BUG FIXED: When encrypting a hashed password and its salt, the same IV was used which is incorrect. Another IV is generated for the SALT exclusively. |
 
 [Back to Index ^](#index)
 
