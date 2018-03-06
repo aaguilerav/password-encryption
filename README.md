@@ -5,6 +5,7 @@
 ## <a id="index"></a>Index
 
 * [**Description.**](#description)
+* [**Use Cases.**](#cases)
 * [**Pre-requisites.**](#preRequisites)
 * [**Configuration.**](#configuration)
 * [**Packaging.**](#packaging)
@@ -15,6 +16,16 @@
 
 ## <a id="description"/></a>Description
 Component used for symmetric encryption and secure hash generation ([scrypt key derivation function](http://www.tarsnap.com/scrypt.html)) for secure password storage.
+
+[Back to Index ^](#index)
+
+## <a id="cases"/></a>Use Cases
+
+### Securely Storing Credentials
+![Fig1](https://raw.githubusercontent.com/aaguilerav/password-encryption/master/res/process/securely-storing-credentials.png)
+
+### Securely Validating Credentials
+![Fig2](https://raw.githubusercontent.com/aaguilerav/password-encryption/master/res/process/securely-validating-credentials.png)
 
 [Back to Index ^](#index)
 
